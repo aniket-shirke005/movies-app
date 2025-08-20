@@ -1,5 +1,12 @@
 import { useRouter } from "expo-router";
-import { ActivityIndicator, Image, ScrollView, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 
 import SearchBar from "@/components/SearchBar";
 import { icons } from "@/constants/icons";
@@ -15,7 +22,6 @@ export default function Index() {
     loading,
   } = useFetch(() => fetchMovies({ query: "" }));
 
-  console.log({ movies });
   return (
     <View className="flex-1 bg-primary">
       <Image source={images.bg} className="absolute w-full z-0" />
@@ -49,6 +55,23 @@ export default function Index() {
               <Text className="text-lg text-white font-bold mt-5 mb-3">
                 Latest Movies
               </Text>
+
+              <FlatList
+                data={movies}
+                renderItem={({ item }) => (
+                  <Text className="text-white text-sm">{item.title}</Text>
+                )}
+                keyExtractor={(item) => item.id.toString()}
+                scrollEnabled={false}
+                numColumns={3}
+                columnWrapperStyle={{
+                  justifyContent: "flex-start",
+                  gap: 10,
+                  paddingRight: 5,
+                  marginBottom: 10,
+                }}
+                className="mt-2 pb-32"
+              />
             </>
           </View>
         )}
